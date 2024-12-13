@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bionic Reading Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            background-color: #F5F5F5;
+            color: #333333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .night-mode {
+            background-color: #121212;
+            color: #B0B0B0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .settings {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        #content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-family: inherit;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-align: center;
+            font-size: 16px;
+            padding: 10px 15px;
+            color: white;
+            background-color: #28a745;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #back-button:hover {
+            background-color: #218838;
+        }
+
+        select, input[type="checkbox"] {
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回输入页面 -->
+    <a id="back-button" href="{% url 'input_text' %}?text={{ original_text|urlencode }}">Back to Input</a>
+
+    <div class="container">
+        <h1>Bionic Reading Result</h1>
+
+        <!-- 功能设置 -->
+        <div class="settings">
+            <div>
+                <label for="bg-color">Background Color:</label>
+                <select id="bg-color">
+                    <option value="#F5F5F5" selected>Default (Light Gray)</option>
+                    <option value="#E8F5E9">Light Green</option>
+                    <option value="#FDF5E6">Beige</option>
+                </select>
+            </div>
+            <div>
+                <label for="font-family">Font:</label>
+                <select id="font-family">
+                    <option value="Arial" selected>Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Comic Sans MS">Comic Sans</option>
+                </select>
+            </div>
+            <div>
+                <label for="font-size">Font Size:</label>
+                <select id="font-size">
+                    <option value="16px">Small</option>
+                    <option value="18px" selected>Medium</option>
+                    <option value="20px">Large</option>
+                    <option value="24px">Extra Large</option>
+                </select>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="night-mode"> Night Mode
+                </label>
+            </div>
+        </div>
+
+        <!-- 显示内容 -->
+        <div id="content">
+            {{ bionic_text|safe }}
+        </div>
+    </div>
+
+    <!-- JavaScript 控制 -->
+    <script>
+        const contentDiv = document.getElementById('content');
+        const bgColorSelect = document.getElementById('bg-color');
+        const fontFamilySelect = document.getElementById('font-family');
+        const fontSizeSelect = document.getElementById('font-size');
+        const nightModeCheckbox = document.getElementById('night-mode');
+        const body = document.body;
+
+        // 更新背景颜色（在非夜间模式下生效）
+        bgColorSelect.addEventListener('change', function () {
+            if (!nightModeCheckbox.checked) {
+                const selectedColor = this.value;
+                body.style.backgroundColor = selectedColor; // 页面背景颜色
+                contentDiv.style.backgroundColor = selectedColor; // 文本框背景颜色
+            }
+        });
+
+        // 更新字体
+        fontFamilySelect.addEventListener('change', function () {
+            contentDiv.style.fontFamily = this.value;
+        });
+
+        // 更新字号
+        fontSizeSelect.addEventListener('change', function () {
+            contentDiv.style.fontSize = this.value;
+        });
+
+        // 夜间模式切换
+        nightModeCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                body.classList.add('night-mode');
+                contentDiv.style.backgroundColor = '#121212'; // 夜间模式背景
+                contentDiv.style.color = '#B0B0B0'; // 夜间模式字体颜色
+            } else {
+                body.classList.remove('night-mode');
+                contentDiv.style.backgroundColor = bgColorSelect.value; // 恢复用户选择的背景色
+                contentDiv.style.color = '#333333'; // 恢复默认字体颜色
+            }
+        });
+    </script>
+</body>
+</html>

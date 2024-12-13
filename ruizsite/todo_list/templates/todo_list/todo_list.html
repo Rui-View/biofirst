@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rui's Todo List</title>
+    <!-- import Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F5EBE0; /* main backgroundcolor */
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #EDEDE9; /* container backgroundcolor */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4B3F36;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            margin-top: 20px;
+            background-color: #FFFFFF;
+        }
+
+        .table thead {
+            background-color: #D5BDAF;
+            color: #FFFFFF;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #E3D5CA; /* odd rows */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #FFFFFF; /* even rows */
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn-custom {
+            background-color: #D6CCC2;
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #D5BDAF;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rui's Todo List</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">List ID</th>
+                    <th scope="col">Field Title</th>
+                    <th scope="col">Descriptions</th>
+                    <th scope="col">Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ todo.title }}</td>
+                    <td>{{ todo.description }}</td>
+                    <td>{{ todo.deadline }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
