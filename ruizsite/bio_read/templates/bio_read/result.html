@@ -147,12 +147,15 @@
         const nightModeCheckbox = document.getElementById('night-mode');
         const body = document.body;
 
+        // 记录用户自定义背景颜色
+        let lastBgColor = bgColorSelect.value;
+
         // 更新背景颜色（在非夜间模式下生效）
         bgColorSelect.addEventListener('change', function () {
             if (!nightModeCheckbox.checked) {
-                const selectedColor = this.value;
-                body.style.backgroundColor = selectedColor; // 页面背景颜色
-                contentDiv.style.backgroundColor = selectedColor; // 文本框背景颜色
+                lastBgColor = this.value; // 保存当前背景色
+                body.style.backgroundColor = lastBgColor;
+                contentDiv.style.backgroundColor = lastBgColor;
             }
         });
 
@@ -169,15 +172,20 @@
         // 夜间模式切换
         nightModeCheckbox.addEventListener('change', function () {
             if (this.checked) {
+                // 启用夜间模式，覆盖所有背景颜色
                 body.classList.add('night-mode');
-                contentDiv.style.backgroundColor = '#121212'; // 夜间模式背景
-                contentDiv.style.color = '#B0B0B0'; // 夜间模式字体颜色
+                body.style.backgroundColor = '#121212'; // 全局背景为黑色
+                contentDiv.style.backgroundColor = '#121212'; // 文本框背景为黑色
+                contentDiv.style.color = '#B0B0B0'; // 字体颜色变为浅灰色
             } else {
+                // 关闭夜间模式，恢复用户选择的背景颜色
                 body.classList.remove('night-mode');
-                contentDiv.style.backgroundColor = bgColorSelect.value; // 恢复用户选择的背景色
+                body.style.backgroundColor = lastBgColor;
+                contentDiv.style.backgroundColor = lastBgColor;
                 contentDiv.style.color = '#333333'; // 恢复默认字体颜色
             }
         });
+
     </script>
 </body>
 </html>
